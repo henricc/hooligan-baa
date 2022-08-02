@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "locally": "node -e \"console.log(require('./index').handler(require('./event_1.json')));\""
+    }
+}
