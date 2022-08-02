@@ -1,21 +1,38 @@
-function formatResponse(activeStreams, allowNewStream) {
 
-    const response = {
-        "activeStreams": activeStreams,
-        "allowNewStream": allowNewStream
-    };
-
-    return response;
+function containsUserId(userId) {
+    const hasUserId = userId != undefined ? true : false;
+    return hasUserId;
 }
 
 exports.handler = async (event) => {
 
-    const userId = event.userId;
-    console.log(userId);
 
-    const response = {
-        statusCode: 200,
-        body: JSON.stringify('Hello from Lambda!'),
-    };
-    return response;
+    const userId = event.userId;
+    const hasUserId = containsUserId(userId);
+
+    if (hasUserId) {
+
+        const response = {
+            statusCode: 200,
+            body: JSON.stringify('Hello from Lambda!'),
+        };
+
+        console.log(response);
+
+        return response;
+
+    } else {
+
+        const response = {
+            statusCode: 400,
+            body: "The 'userId' field is missing."
+        };
+
+        console.log(response);
+
+        return response;
+    }
+
+
+
 };
