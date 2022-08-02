@@ -1,6 +1,6 @@
 
 function containsUserId(userId) {
-    const hasUserId = userId != undefined ? true : false;
+    const hasUserId = userId ? true : false; // checks for null/undefined/empty
     return hasUserId;
 }
 
@@ -34,3 +34,5 @@ exports.handler = async (event) => {
     }
 
 };
+
+// exports.containsUserId = containsUserId;

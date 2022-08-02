@@ -1,5 +1,13 @@
 {
+    "main": "index.js",
     "scripts": {
-        "locally": "node -e \"console.log(require('./index').handler(require('./event_1.json')));\""
+        "locally": "node -e \"console.log(require('./index').handler(require('./event_1.json')));\"",
+        "test": "jest"
+    },
+    "devDependencies": {
+        "jest": "^28.1.3"
+    },
+    "dependencies": {
+        "rewire": "^6.0.0"
     }
 }
