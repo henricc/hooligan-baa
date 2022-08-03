@@ -26,11 +26,8 @@ async function getActiveStreams(userId) {
     // query DynamoDB
     const response = await ddbClient.query(params, function (err, data) {
         if (err) {
-            console.log("Error", err);
-        } else {
-            console.log("Success", data);
-        }
-
+            console.log("Error with DynamoDB Call: ", err);
+        };
     });
 
     const activeStreams = (await response.promise()).Count;
@@ -45,25 +42,37 @@ function containsUserId(userId) {
 }
 
 
+
+
 exports.handler = async (event) => {
 
     const userId = event.userId;
+
     const hasUserId = containsUserId(userId);
 
     if (hasUserId) {
 
         const activeStreams = await getActiveStreams(userId);
-        console.log(`Active Streams: ${activeStreams}`)
 
         const allowNewStream = activeStreams < maxAllowedStreams;
 
-        return activeStreams;
+
+        response = {
+            statusCode: 200,
+            allowNewStream: allowNewStream,
+            activeStreams: activeStreams
+        }
+        console.log(response)
+
+        return response;
 
     } else {
 
+        const allowNewStream = false;
+
         const response = {
             statusCode: 400,
-            body: "The 'userId' field is incorrect."
+            body: "The 'userId' field is invalid or missing."
         };
 
         console.log(response);
