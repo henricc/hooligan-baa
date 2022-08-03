@@ -1,8 +1,8 @@
 var AWS = require('aws-sdk');
-const { run } = require('jest');
 
 const tableName = "hooli-henri";
 const REGION = "eu-west-1";
+const maxAllowedStreams = 3;
 
 AWS.config.update({ region: REGION });
 var ddbClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
@@ -10,6 +10,7 @@ var ddbClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 
 async function getActiveStreams(userId) {
 
+    // parameters for DynamoDB Query to count number of active streams for user
     const params = {
         TableName: tableName,
         KeyConditionExpression: `#userId = :userIdValue`,
@@ -22,6 +23,7 @@ async function getActiveStreams(userId) {
         Select: "COUNT"
     };
 
+    // query DynamoDB
     const response = await ddbClient.query(params, function (err, data) {
         if (err) {
             console.log("Error", err);
@@ -34,18 +36,14 @@ async function getActiveStreams(userId) {
     const activeStreams = (await response.promise()).Count;
 
     return activeStreams;
-
-
 }
 
-
-
-
-
+// replace this function
 function containsUserId(userId) {
     const hasUserId = userId ? true : false; // checks for null/undefined/empty
     return hasUserId;
 }
+
 
 exports.handler = async (event) => {
 
@@ -57,12 +55,7 @@ exports.handler = async (event) => {
         const activeStreams = await getActiveStreams(userId);
         console.log(`Active Streams: ${activeStreams}`)
 
-        const response = {
-            statusCode: 200,
-            body: JSON.stringify('Hello from Lambda!'),
-        };
-
-        // console.log(response);
+        const allowNewStream = activeStreams < maxAllowedStreams;
 
         return activeStreams;
 
