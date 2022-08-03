@@ -31,7 +31,9 @@ async function getActiveStreams(userId) {
 
     });
 
-    return response.promise();
+    const activeStreams = (await response.promise()).Count;
+
+    return activeStreams;
 
 
 }
@@ -46,15 +48,14 @@ function containsUserId(userId) {
 }
 
 exports.handler = async (event) => {
-    console.log("hello")
 
     const userId = event.userId;
     const hasUserId = containsUserId(userId);
 
     if (hasUserId) {
 
-        const dbResponse = await getActiveStreams(userId);
-        console.log(`db response: ${dbResponse.Count}`)
+        const activeStreams = await getActiveStreams(userId);
+        console.log(`Active Streams: ${activeStreams}`)
 
         const response = {
             statusCode: 200,
@@ -63,13 +64,13 @@ exports.handler = async (event) => {
 
         // console.log(response);
 
-        return dbResponse;
+        return activeStreams;
 
     } else {
 
         const response = {
             statusCode: 400,
-            body: "The 'userId' field is missing."
+            body: "The 'userId' field is incorrect."
         };
 
         console.log(response);
