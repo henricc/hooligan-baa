@@ -1,11 +1,11 @@
 var AWS = require('aws-sdk');
 
 const tableName = "hooli-henri";
-const REGION = "eu-west-1";
 const maxAllowedStreams = 3;
+const REGION = "eu-west-1";
 
 AWS.config.update({ region: REGION });
-var ddbClient = new AWS.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
+var ddbClient = new AWS.DynamoDB.DocumentClient();
 
 
 async function getActiveStreams(userId) {
@@ -57,7 +57,7 @@ exports.handler = async (event) => {
         const allowNewStream = activeStreams < maxAllowedStreams;
 
 
-        response = {
+        const response = {
             statusCode: 200,
             allowNewStream: allowNewStream,
             activeStreams: activeStreams
@@ -81,5 +81,3 @@ exports.handler = async (event) => {
     }
 
 };
-
-// exports.containsUserId = containsUserId;
