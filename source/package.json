@@ -2,7 +2,7 @@
     "main": "index.js",
     "scripts": {
         "locally": "node -e \"console.log(require('./index').handler(require('./event_1.json')));\"",
-        "test": "jest"
+        "test": "jest "
     },
     "devDependencies": {
         "@shelf/jest-dynamodb": "^3.2.0",

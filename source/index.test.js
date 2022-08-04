@@ -2,6 +2,7 @@
 
 const { DocumentClient } = require('aws-sdk/clients/dynamodb');
 tableName = 'hooli-henri-mock'
+
 const params = (userId) => {
     return {
         TableName: tableName,
