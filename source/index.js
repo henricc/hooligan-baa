@@ -35,22 +35,13 @@ async function getActiveStreams(userId) {
     return activeStreams;
 }
 
-// replace this function
-function containsUserId(userId) {
-    const hasUserId = userId ? true : false; // checks for null/undefined/empty
-    return hasUserId;
-}
-
-
 
 
 exports.handler = async (event) => {
 
     const userId = event.userId;
 
-    const hasUserId = containsUserId(userId);
-
-    if (hasUserId) {
+    if (userId) {
 
         const activeStreams = await getActiveStreams(userId);
 
