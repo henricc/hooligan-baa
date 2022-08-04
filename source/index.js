@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 
-const tableName = "hooli-henri";
+const tableName = "hooli-henrid";
 const maxAllowedStreams = 3;
 const REGION = "eu-west-1";
 
@@ -30,7 +30,7 @@ async function getActiveStreams(userId) {
         };
     });
 
-    const activeStreams = (await response.promise()).Count;
+    const activeStreams = (await response.promise()).Count; // get number of active streams from query response
 
     return activeStreams;
 }
@@ -41,34 +41,45 @@ exports.handler = async (event) => {
 
     const userId = event.userId;
 
-    if (userId) {
-
-        const activeStreams = await getActiveStreams(userId);
-
-        const allowNewStream = activeStreams < maxAllowedStreams;
+    try {
+        if (userId) {
 
 
-        const response = {
-            statusCode: 200,
-            allowNewStream: allowNewStream,
-            activeStreams: activeStreams
+
+            const activeStreams = await getActiveStreams(userId);
+
+            const allowNewStream = activeStreams < maxAllowedStreams;
+
+
+            const response = {
+                statusCode: 200,
+                allowNewStream: allowNewStream,
+                activeStreams: activeStreams
+            }
+            console.log(response)
+
+            return response;
+
+
+        } else {
+
+            const allowNewStream = false;
+
+            const response = {
+                statusCode: 400,
+                body: "The 'userId' field is invalid or missing."
+            };
+
+            console.log(response);
+
+            return response;
         }
-        console.log(response)
-
-        return response;
-
-    } else {
-
-        const allowNewStream = false;
-
-        const response = {
-            statusCode: 400,
-            body: "The 'userId' field is invalid or missing."
+    } catch (error) {
+        // console.log(error)
+        return {
+            statusCode: 500,
+            reason: error.code
         };
-
-        console.log(response);
-
-        return response;
     }
 
 };
