@@ -62,3 +62,9 @@ To change the *userId* being called: in *./source/event_1.json* change the *user
 
 To run the code locally you can use the following command (should you have all dependencies installed and AWS configured):
 * npm run locally
+  
+## Scalability, Logging, and Monitoring Strategy
+
+In terms of monitoring for this solution, Lambda and API Gateway can be logged using CloudWatch logs. From there alarms can be setup to trigger when the requirements are met such as amount of executions, type of userIds being logged, etc. 
+
+When looking at scalability, API Gateway has a default throttle per account for 10 000 requests per second, which can be increased if needed. Lambda has a default of 1000 concurrent executions perregion which can also be increased. For DynamoDB autoscaling can be setup to scale the table according to its needs.

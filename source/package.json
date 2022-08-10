@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.142.0",
-        "aws-sdk": "^2.1187.0",
+        "aws-sdk": "^2.1191.0",
         "rewire": "^6.0.0"
     },
     "jest": {
